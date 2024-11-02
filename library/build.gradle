@@ -1,9 +1,9 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 
 android {
-
     namespace = "com.opensource.svgaplayer"
     compileSdk = 34
 
@@ -21,9 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+    productFlavors {
     }
     packagingOptions {
         exclude 'META-INF/ASL2.0'
@@ -37,5 +35,7 @@ android {
 
 
 dependencies {
-    implementation 'com.squareup.wire:wire-runtime:'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.squareup.wire:wire-runtime:4.4.1'
+
 }
