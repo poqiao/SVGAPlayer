@@ -20,5 +20,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "TestApplication"
-include(":app","library2")
-include(":tasw")
+include(":app","library")
+ 
