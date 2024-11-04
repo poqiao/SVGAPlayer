@@ -1,0 +1,236 @@
+apply plugin: 'com.android.application'
+
+//加载kotlin插件
+apply plugin: 'kotlin-android'
+apply plugin: 'com.mob.sdk'
+MobSDK {
+    appKey "3a72d06824450"
+    appSecret "81c1e84d35be1320bafdf51e427c7be3"
+    SecVerify {}
+}
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+
+
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
+// bugly 自动上传符号表 ， debug = true
+//bugly {
+//    debug = true
+//}
+
+android {
+    namespace 'com.rychat.tebal.cggin'
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    compileSdk rootProject.ext.android.compileSdkVersion
+    defaultConfig {
+        applicationId "com.rychat.tebal.cggin"
+        minSdk rootProject.ext.android.minSdkVersion
+        targetSdk rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        multiDexEnabled true
+
+        ndk {
+            //设置支持的SO库驾构
+            abiFilters "armeabi-v7a", "arm64-v8a"
+            //  abiFilters "x86", "x86_64", "armeabi-v7a", "arm64-v8a"
+        }
+
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    //recommend
+    dexOptions {
+        jumboMode = true
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
+    signingConfigs {
+
+        debug {
+            storeFile file('../echat.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+            v2SigningEnabled true
+        }
+
+        release {
+            storeFile file('../echat.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+
+        v2 {
+            storeFile file('../echat.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+            v2SigningEnabled true
+        }
+
+        v1 {
+            storeFile file('../echat.jks')
+            storePassword "123456"
+            keyAlias "key0"
+            keyPassword "123456"
+            v2SigningEnabled false
+        }
+
+    }
+
+    //https://blog.csdn.net/u013363872/article/details/100593587
+    buildTypes {
+        //开发环境包
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "夜巴狸"
+        }
+
+        //正式环境包
+        product {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "夜巴狸"
+        }
+
+
+        release {
+            debuggable false
+            // Gradle Plugin 8.0默认开启
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "夜巴狸"
+        }
+
+        //18服，正式环境测试包
+        product18 {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "夜巴狸"
+        }
+
+        beta {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "夜巴狸测试"
+        }
+
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+    }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
+
+
+
+
+
+// 新客户集成 SDK 建议把下面的脚本加上，可以优化包体积
+    packagingOptions {
+        exclude "lib/armeabi/libijkhlscache-master.so"
+        exclude "lib/armeabi-v7a/libijkhlscache-master.so"
+        exclude "lib/arm64-v8a/libijkhlscache-master.so"
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/INDEX.LIST'
+    }
+    //控制输出apk的名称
+    applicationVariants.all { variant ->
+
+
+
+
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                if (IS_JENKINS.toBoolean()) {
+                    outputFileName = JENKINS_APK_PATH
+                } else {
+                    // 输出apk名称为测试包为：mm_1.0.0(v1)_dev.apk 正式包为：mm_1.0.0(v1)_product.apk
+                    def time = new Date().format("yyyyMMdd_HH_mm", TimeZone.getTimeZone("GMT+08:00"))
+                    def version = "${versionName}_(v${versionCode})"
+                    def apkName = "yebali"
+                    def fileName = "${apkName}_${version}_${variant.buildType.name}_${time}.apk"
+                    outputFileName = fileName
+                }
+            }
+        }
+
+        // faceU相芯去除冗余配置
+        variant.mergeAssetsProvider.configure {
+            doLast {
+                delete(fileTree(dir: outputDir, includes: ['model/ai_hand_processor.bundle',
+                                                           'model/ai_human_processor.bundle',
+                                                           'graphics/body_slim.bundle',
+                                                           'graphics/controller.bundle',
+                                                           'graphics/face_makeup.bundle',
+                                                           'graphics/fuzzytoonfilter.bundle',
+                                                           'graphics/fxaa.bundle',
+                                                           'graphics/tongue.bundle']))
+            }
+        }
+    }
+
+}
+
+
+repositories {
+    flatDir {
+        dirs 'libs', '../erban_core/libs'
+    }
+}
+
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.activity:activity:1.8.0'
+
+}
+
+
