@@ -3,6 +3,11 @@ package com.opensource.svgaplayer
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.text.BoringLayout
 import android.text.StaticLayout
 import android.text.TextPaint
@@ -41,11 +46,17 @@ class SVGADynamicEntity {
         this.dynamicHidden.put(forKey, value)
     }
 
-    fun setDynamicImage(bitmap: Bitmap, forKey: String) {
-        this.dynamicImage.put(forKey, bitmap)
+    fun setDynamicImage(bitmap: Bitmap,isCircle: Boolean=false, forKey: String) {
+        if (isCircle)
+        {
+            this.dynamicImage.put(forKey, toRoundBitmap(bitmap))
+        }else{
+            this.dynamicImage.put(forKey,bitmap)
+        }
+
     }
 
-    fun setDynamicImage(url: String, forKey: String) {
+    fun setDynamicImage(url: String,isCircle: Boolean=false, forKey: String) {
         val handler = android.os.Handler()
         SVGAParser.threadPoolExecutor.execute {
             (URL(url).openConnection() as? HttpURLConnection)?.let {
@@ -55,7 +66,7 @@ class SVGADynamicEntity {
                     it.connect()
                     it.inputStream.use { stream ->
                         BitmapFactory.decodeStream(stream)?.let {
-                            handler.post { setDynamicImage(it, forKey) }
+                            handler.post { setDynamicImage(it, isCircle,forKey) }
                         }
                     }
                 } catch (e: Exception) {
@@ -149,5 +160,66 @@ class SVGADynamicEntity {
         this.dynamicIClickArea.clear()
         this.mClickMap.clear()
         this.dynamicDrawerSized.clear()
+    }
+
+    /**
+     * 将图像裁剪成圆形
+     *
+     * @param bitmap
+     * @return
+     */
+    fun toRoundBitmap(bitmap: Bitmap): Bitmap {
+        var width = bitmap.getWidth()
+        var height = bitmap.getHeight()
+        val roundPx: Float
+        val left: Float
+        val top: Float
+        val right: Float
+        val bottom: Float
+        val dst_left: Float
+        val dst_top: Float
+        val dst_right: Float
+        val dst_bottom: Float
+        if (width <= height) {
+            roundPx = (width / 2).toFloat()
+            top = 0f
+            bottom = width.toFloat()
+            left = 0f
+            right = width.toFloat()
+            height = width
+            dst_left = 0f
+            dst_top = 0f
+            dst_right = width.toFloat()
+            dst_bottom = width.toFloat()
+        } else {
+            roundPx = (height / 2).toFloat()
+            val clip = ((width - height) / 2).toFloat()
+            left = clip
+            right = width - clip
+            top = 0f
+            bottom = height.toFloat()
+            width = height
+            dst_left = 0f
+            dst_top = 0f
+            dst_right = height.toFloat()
+            dst_bottom = height.toFloat()
+        }
+        val output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+        val color = -0xbdbdbe
+        val paint = Paint()
+        val src = Rect(left.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+        val dst = Rect(dst_left.toInt(), dst_top.toInt(), dst_right.toInt(), dst_bottom.toInt())
+        val rectF = RectF(dst)
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.setColor(color)
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
+        canvas.drawBitmap(bitmap, src, dst, paint)
+        if (!bitmap.isRecycled) {
+            bitmap.recycle()
+        }
+        return output
     }
 }
