@@ -24,6 +24,10 @@ android {
     buildFeatures {
         viewBinding true
     }
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+    }
 
     packagingOptions {
         exclude 'META-INF/ASL2.0'
