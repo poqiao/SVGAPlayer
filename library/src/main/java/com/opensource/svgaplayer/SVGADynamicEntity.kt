@@ -1,9 +1,9 @@
 package com.opensource.svgaplayer
 
-import android.R.attr
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
@@ -179,6 +179,7 @@ class SVGADynamicEntity {
         )
         val canvas = Canvas(dstBitmap)
         val paint = Paint()
+        paint.color = 0xff424242.toInt()
         paint.isAntiAlias = true
         val rect = Rect(0, 0, squareBitmapWidth, squareBitmapWidth)
         val rectF = RectF(rect)
