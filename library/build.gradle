@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 
 android {
@@ -10,10 +9,8 @@ android {
     defaultConfig {
         minSdk = 24
         targetSdk = 34
-
-    }
-    compileOptions {
-        kotlinOptions.freeCompilerArgs += ['-module-name', "com.opensource.svgaplayer"]
+        versionCode = 1
+        versionName = "1.0"
     }
     buildTypes {
         release {
@@ -22,7 +19,12 @@ android {
         }
     }
     productFlavors {
+
     }
+    buildFeatures {
+        viewBinding true
+    }
+
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
@@ -36,6 +38,5 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.squareup.wire:wire-runtime:4.4.1'
-
+    implementation 'com.squareup.wire:wire-runtime:5.1.0'
 }
