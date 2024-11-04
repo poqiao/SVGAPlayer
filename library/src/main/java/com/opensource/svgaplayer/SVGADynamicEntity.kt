@@ -8,9 +8,11 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.graphics.RectF
 import android.text.BoringLayout
 import android.text.StaticLayout
 import android.text.TextPaint
+import java.lang.Integer.min
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -169,21 +171,27 @@ class SVGADynamicEntity {
      * @return
      */
     fun toRoundBitmap(bitmap: Bitmap): Bitmap {
-        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(output)
-
+        val squareBitmapWidth = min(bitmap.width, bitmap.height)
+        val dstBitmap = Bitmap.createBitmap(
+            squareBitmapWidth,  // Width
+            squareBitmapWidth,  // Height
+            Bitmap.Config.ARGB_8888 // Config
+        )
+        val canvas = Canvas(dstBitmap)
         val paint = Paint()
-        val rect = Rect(0, 0, bitmap.width, bitmap.height)
-
         paint.isAntiAlias = true
-        canvas.drawCircle(bitmap.width / 2f, bitmap.height / 2f, bitmap.width / 2f, paint)
-
-        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
-        canvas.drawBitmap(bitmap, rect, rect, paint)
+        val rect = Rect(0, 0, squareBitmapWidth, squareBitmapWidth)
+        val rectF = RectF(rect)
+        canvas.drawOval(rectF, paint)
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        val left = ((squareBitmapWidth - bitmap.width) / 2).toFloat()
+        val top = ((squareBitmapWidth - bitmap.height) / 2).toFloat()
+        canvas.drawBitmap(bitmap, left, top, paint)
         if (!bitmap.isRecycled)
         {
             bitmap.recycle()
         }
-        return output
+
+        return dstBitmap
     }
 }
