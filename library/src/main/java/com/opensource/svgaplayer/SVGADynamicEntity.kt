@@ -46,7 +46,7 @@ class SVGADynamicEntity {
         this.dynamicHidden.put(forKey, value)
     }
 
-    fun setDynamicImage(bitmap: Bitmap,isCircle: Boolean=false, forKey: String) {
+    fun setDynamicImage(bitmap: Bitmap, forKey: String,isCircle: Boolean=false) {
         if (isCircle)
         {
             this.dynamicImage.put(forKey, toRoundBitmap(bitmap))
@@ -56,7 +56,7 @@ class SVGADynamicEntity {
 
     }
 
-    fun setDynamicImage(url: String,isCircle: Boolean=false, forKey: String) {
+    fun setDynamicImage(url: String, forKey: String,isCircle: Boolean=false) {
         val handler = android.os.Handler()
         SVGAParser.threadPoolExecutor.execute {
             (URL(url).openConnection() as? HttpURLConnection)?.let {
@@ -66,7 +66,7 @@ class SVGADynamicEntity {
                     it.connect()
                     it.inputStream.use { stream ->
                         BitmapFactory.decodeStream(stream)?.let {
-                            handler.post { setDynamicImage(it, isCircle,forKey) }
+                            handler.post { setDynamicImage(it,forKey,isCircle) }
                         }
                     }
                 } catch (e: Exception) {
