@@ -15,7 +15,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,9 +54,7 @@ publishing {
     publications {
         // 这个 aarAndroid 可以随便填，只是一个任务名字而已(如果有多渠道，整段在下面多复制一份)
         // MavenPublication必须有，这个是调用的任务类
-//        aarAndroid(MavenPublication) {
-//            // 这里头是artifacts的配置信息，不填会采用默认的
-
+            // 这里头是artifacts的配置信息，不填会采用默认的
         release(MavenPublication) {
 //            groupId = 'com.my-company'
 //            artifactId = 'my-library'

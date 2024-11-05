@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TestApplication"
+rootProject.name = "SVGAPlayerTest"
 include(":app","library")
  

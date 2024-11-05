@@ -188,8 +188,7 @@ class SVGADynamicEntity {
         val left = ((squareBitmapWidth - bitmap.width) / 2).toFloat()
         val top = ((squareBitmapWidth - bitmap.height) / 2).toFloat()
         canvas.drawBitmap(bitmap, left, top, paint)
-        if (!bitmap.isRecycled)
-        {
+        if (!bitmap.isRecycled) {
             bitmap.recycle()
         }
 
