@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_1"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_4"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_5"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_6"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_7"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_8"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+
+        <com.opensource.svgaplayer.SVGAImageView
+            android:id="@+id/svga_9"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="10dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="下一个" />
+</LinearLayout>

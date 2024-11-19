@@ -1,6 +1,7 @@
 package com.opensource.svgaplayer
 
 import android.content.Context
+import android.util.Log
 import com.opensource.svgaplayer.utils.log.LogUtils
 import java.io.File
 import java.net.URL
@@ -30,7 +31,7 @@ object SVGACache {
 
 
     fun onCreate(context: Context?) {
-        onCreate(context, Type.DEFAULT)
+        onCreate(context, Type.FILE)
     }
 
     fun onCreate(context: Context?, type: Type) {
@@ -86,7 +87,7 @@ object SVGACache {
             buildCacheDir(cacheKey)
         } else {
             buildSvgaFile(
-                    cacheKey
+                cacheKey
             )
         }.exists()
     }
@@ -110,6 +111,18 @@ object SVGACache {
 
     fun buildSvgaFile(cacheKey: String): File {
         return File("$cacheDir$cacheKey.svga")
+    }
+
+    fun clearSvga01(cacheKey: String) {
+        val f0 = File("$cacheDir$cacheKey.0")
+        val f1 = File("$cacheDir$cacheKey.1")
+        if (f0.exists()) {
+            f0.delete()
+        }
+        if (f1.exists()) {
+            f1.delete()
+        }
+        return
     }
 
     fun buildAudioFile(audio: String): File {

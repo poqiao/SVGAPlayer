@@ -5,6 +5,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.Build
+import android.util.Log
 import com.opensource.svgaplayer.bitmap.SVGABitmapByteArrayDecoder
 import com.opensource.svgaplayer.bitmap.SVGABitmapFileDecoder
 import com.opensource.svgaplayer.entities.SVGAAudioEntity
@@ -85,6 +86,8 @@ class SVGAVideoEntity {
         this.mFrameWidth = frameWidth
         this.mFrameHeight = frameHeight
         this.mCacheDir = cacheDir
+
+        Log.d("SVGAParser","mCacheDir.absoultePath===="+mCacheDir.absolutePath)
         this.movieItem = entity
         entity.params?.let(this::setupByMovie)
         try {
