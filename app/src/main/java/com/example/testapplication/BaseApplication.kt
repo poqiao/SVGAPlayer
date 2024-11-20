@@ -13,7 +13,6 @@ class BaseApplication : Application() {
         super.onCreate()
         SVGAParser.shareParser().init(this)
         SVGALogger.setLogEnabled(true)
-        val cacheDir = File(this.applicationContext.cacheDir, "svga")
-        HttpResponseCache.install(cacheDir, 1024 * 1024 * 128)
+
     }
 }
