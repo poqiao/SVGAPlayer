@@ -86,8 +86,6 @@ class SVGAVideoEntity {
         this.mFrameWidth = frameWidth
         this.mFrameHeight = frameHeight
         this.mCacheDir = cacheDir
-
-        Log.d("SVGAParser","mCacheDir.absoultePath===="+mCacheDir.absolutePath)
         this.movieItem = entity
         entity.params?.let(this::setupByMovie)
         try {

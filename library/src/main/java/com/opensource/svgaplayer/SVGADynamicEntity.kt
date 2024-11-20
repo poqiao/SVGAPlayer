@@ -189,6 +189,13 @@ class SVGADynamicEntity {
         this.dynamicIClickArea.clear()
         this.mClickMap.clear()
         this.dynamicDrawerSized.clear()
+        if (dynamicImage.isNotEmpty()) {
+            dynamicImage.forEach {
+                if (!it.value.isRecycled) {
+                    it.value.recycle()
+                }
+            }
+        }
     }
 
     /**

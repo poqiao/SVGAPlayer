@@ -38,9 +38,9 @@ open class SVGAImageView @JvmOverloads constructor(
     var loops = 0
 
     @Deprecated(
-            "It is recommended to use clearAfterDetached, or manually call to SVGAVideoEntity#clear." +
-                    "If you just consider cleaning up the canvas after playing, you can use FillMode#Clear.",
-            level = DeprecationLevel.WARNING
+        "It is recommended to use clearAfterDetached, or manually call to SVGAVideoEntity#clear." +
+                "If you just consider cleaning up the canvas after playing, you can use FillMode#Clear.",
+        level = DeprecationLevel.WARNING
     )
     var clearsAfterStop = false
     var clearsAfterDetached = false
@@ -75,9 +75,11 @@ open class SVGAImageView @JvmOverloads constructor(
                 "0" -> {
                     fillMode = FillMode.Backward
                 }
+
                 "1" -> {
                     fillMode = FillMode.Forward
                 }
+
                 "2" -> {
                     fillMode = FillMode.Clear
                 }
@@ -124,6 +126,16 @@ open class SVGAImageView @JvmOverloads constructor(
         startAnimation(null, false)
     }
 
+//    fun resume() {
+//        val drawable = getSVGADrawable() ?: return
+//        drawable.resume()
+//    }
+//
+//    fun pause() {
+//        val drawable = getSVGADrawable() ?: return
+//        drawable.pause()
+//    }
+
     fun startAnimation(range: SVGARange?, reverse: Boolean = false) {
         stopAnimation(false)
         play(range, reverse)
@@ -168,13 +180,15 @@ open class SVGAImageView @JvmOverloads constructor(
             val getMethod = animatorClass.getDeclaredMethod("getDurationScale") ?: return scale
             scale = (getMethod.invoke(animatorClass) as Float).toDouble()
             if (scale == 0.0) {
-                val setMethod = animatorClass.getDeclaredMethod("setDurationScale",Float::class.java) ?: return scale
+                val setMethod = animatorClass.getDeclaredMethod("setDurationScale", Float::class.java) ?: return scale
                 setMethod.isAccessible = true
-                setMethod.invoke(animatorClass,1.0f)
+                setMethod.invoke(animatorClass, 1.0f)
                 scale = 1.0
-                LogUtils.info(TAG,
-                        "The animation duration scale has been reset to" +
-                                " 1.0x, because you closed it on developer options.")
+                LogUtils.info(
+                    TAG,
+                    "The animation duration scale has been reset to" +
+                            " 1.0x, because you closed it on developer options."
+                )
             }
         } catch (ignore: Exception) {
             ignore.printStackTrace()
@@ -198,9 +212,11 @@ open class SVGAImageView @JvmOverloads constructor(
                 FillMode.Backward -> {
                     drawable.currentFrame = mStartFrame
                 }
+
                 FillMode.Forward -> {
                     drawable.currentFrame = mEndFrame
                 }
+
                 FillMode.Clear -> {
                     drawable.cleared = true
                 }
@@ -268,7 +284,7 @@ open class SVGAImageView @JvmOverloads constructor(
         stepToFrame(frame, andPlay)
     }
 
-    fun setOnAnimKeyClickListener(clickListener : SVGAClickAreaListener){
+    fun setOnAnimKeyClickListener(clickListener: SVGAClickAreaListener) {
         mItemClickAreaListener = clickListener
     }
 

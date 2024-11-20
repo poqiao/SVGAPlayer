@@ -114,8 +114,12 @@ object SVGACache {
     }
 
     fun clearSvga01(cacheKey: String) {
+        val f = File("$cacheDir$cacheKey")
         val f0 = File("$cacheDir$cacheKey.0")
         val f1 = File("$cacheDir$cacheKey.1")
+        if (f.exists()) {
+            f.delete()
+        }
         if (f0.exists()) {
             f0.delete()
         }
@@ -128,5 +132,6 @@ object SVGACache {
     fun buildAudioFile(audio: String): File {
         return File("$cacheDir$audio.mp3")
     }
+
 
 }

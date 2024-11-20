@@ -84,4 +84,10 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="下一个" />
+
+    <com.opensource.svgaplayer.SVGAImageView
+        android:id="@+id/svga_10"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="10dp" />
 </LinearLayout>

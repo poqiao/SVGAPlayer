@@ -2,21 +2,8 @@ package com.example.testapplication
 
 import android.app.Activity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.testapplication.ui.theme.TestApplicationTheme
-import com.opensource.svgaplayer.SVGADrawable
-import com.opensource.svgaplayer.SVGADynamicEntity
 import com.opensource.svgaplayer.SVGAImageView
 import com.opensource.svgaplayer.SVGAParser
 import com.opensource.svgaplayer.SVGAVideoEntity
@@ -36,6 +23,7 @@ class MainActivity : Activity() {
         val svga7 = findViewById<SVGAImageView>(R.id.svga_7)
         val svga8 = findViewById<SVGAImageView>(R.id.svga_8)
         val svga9 = findViewById<SVGAImageView>(R.id.svga_9)
+        val svga10 = findViewById<SVGAImageView>(R.id.svga_10)
         val btn = findViewById<Button>(R.id.btn)
         val svgaParser1 = SVGAParser.shareParser()
         val svgaParser2 = SVGAParser(this)
@@ -43,28 +31,28 @@ class MainActivity : Activity() {
             Log.d("SVGAParser", "AAAAAAA")
         }
         Log.d("SVGAParser", "BBBBBBBBBB")
-        svgaParser1.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
-                SVGAParser.ParseCompletion {
-            override fun onComplete(videoItem: SVGAVideoEntity) {
-                svga1.setVideoItem(videoItem)
-                svga1.startAnimation()
-            }
-
-            override fun onError() {
-            }
-
-        })
-        svgaParser2.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
-                SVGAParser.ParseCompletion {
-            override fun onComplete(videoItem: SVGAVideoEntity) {
-                svga2.setVideoItem(videoItem)
-                svga2.startAnimation()
-            }
-
-            override fun onError() {
-            }
-
-        })
+//        svgaParser1.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
+//                SVGAParser.ParseCompletion {
+//            override fun onComplete(videoItem: SVGAVideoEntity) {
+//                svga1.setVideoItem(videoItem)
+//                svga1.startAnimation()
+//            }
+//
+//            override fun onError() {
+//            }
+//
+//        })
+//        svgaParser2.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
+//                SVGAParser.ParseCompletion {
+//            override fun onComplete(videoItem: SVGAVideoEntity) {
+//                svga2.setVideoItem(videoItem)
+//                svga2.startAnimation()
+//            }
+//
+//            override fun onError() {
+//            }
+//
+//        })
 //        svgaParser2.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
 //                SVGAParser.ParseCompletion {
 //            override fun onComplete(videoItem: SVGAVideoEntity) {
@@ -157,8 +145,8 @@ class MainActivity : Activity() {
             svgaParser2.decodeFromURL(URL("http://img.iyangyang.fun/FvJ5ZgHDily_BZ0AfhM5-NCW_Obb?imageslim"), object :
                     SVGAParser.ParseCompletion {
                 override fun onComplete(videoItem: SVGAVideoEntity) {
-                    svga2.setVideoItem(videoItem)
-                    svga2.startAnimation()
+                    svga3.setVideoItem(videoItem)
+                    svga3.startAnimation()
                 }
 
                 override fun onError() {
@@ -166,6 +154,16 @@ class MainActivity : Activity() {
 
             })
         }
+        SVGAParser.shareParser().decodeFromAssets("emperor_fq.svga",object :  SVGAParser.ParseCompletion{
+            override fun onComplete(videoItem: SVGAVideoEntity) {
+                svga10.setVideoItem(videoItem)
+                svga10.startAnimation()
+            }
+
+            override fun onError() {
+            }
+
+        })
 
     }
 

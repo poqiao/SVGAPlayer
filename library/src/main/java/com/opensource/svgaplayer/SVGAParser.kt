@@ -67,8 +67,8 @@ class SVGAParser(context: Context?) {
                         it.setRequestProperty("Connection", "close")
                         it.connect()
                         it.inputStream.use { inputStream ->
-
                             ByteArrayOutputStream().use { outputStream ->
+                                outputStream
                                 val buffer = ByteArray(4096)
                                 var count: Int
                                 while (true) {
@@ -137,7 +137,7 @@ class SVGAParser(context: Context?) {
 
     fun decodeFromAssets(
             name: String,
-            callback: ParseCompletion?,
+            callback:ParseCompletion?,
             playCallback: PlayCallback? = null
     ) {
         if (mContext == null) {
@@ -154,7 +154,7 @@ class SVGAParser(context: Context?) {
                         callback,
                         true,
                         playCallback,
-                        alias = name
+                        alias = "file:///assets/$name"
                     )
                 }
             } catch (e: Exception) {
@@ -292,18 +292,22 @@ class SVGAParser(context: Context?) {
                         }
                         this.decodeFromCacheKey(cacheKey, callback, alias)
                     } else {
-                        if (!SVGACache.isDefaultCache()) {
-                            // 如果 SVGACache 设置类型为 FILE
-                            threadPoolExecutor.execute {
+                        if (alias?.contains("file:///assets/") == false) {
+                            Log.d("SVGAParser", "说明不是本地svga")
+                            //说明不是本地svga 而是在线svga
+                            if (!SVGACache.isDefaultCache()) {
+                                // 如果 SVGACache 设置类型为 FILE
+                                threadPoolExecutor.execute {
 
-                                SVGACache.buildSvgaFile(cacheKey).let { cacheFile ->
-                                    try {
-                                        cacheFile.takeIf { !it.exists() }?.createNewFile()
-                                        FileOutputStream(cacheFile).write(bytes)
-                                        SVGACache.clearSvga01(cacheKey)
-                                    } catch (e: Exception) {
-                                        LogUtils.error(TAG, "create cache file fail.", e)
-                                        cacheFile.delete()
+                                    SVGACache.buildSvgaFile(cacheKey).let { cacheFile ->
+                                        try {
+                                            cacheFile.takeIf { !it.exists() }?.createNewFile()
+                                            FileOutputStream(cacheFile).write(bytes)
+                                            SVGACache.clearSvga01(cacheKey)
+                                        } catch (e: Exception) {
+                                            LogUtils.error(TAG, "create cache file fail.", e)
+                                            cacheFile.delete()
+                                        }
                                     }
                                 }
                             }
