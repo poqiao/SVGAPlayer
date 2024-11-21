@@ -126,20 +126,11 @@ open class SVGAImageView @JvmOverloads constructor(
         startAnimation(null, false)
     }
 
-//    fun resume() {
-//        val drawable = getSVGADrawable() ?: return
-//        drawable.resume()
-//    }
-//
-//    fun pause() {
-//        val drawable = getSVGADrawable() ?: return
-//        drawable.pause()
-//    }
-
     fun startAnimation(range: SVGARange?, reverse: Boolean = false) {
         stopAnimation(false)
         play(range, reverse)
     }
+
 
     private fun play(range: SVGARange?, reverse: Boolean) {
         LogUtils.info(TAG, "================ start animation ================")
@@ -230,6 +221,15 @@ open class SVGAImageView @JvmOverloads constructor(
         getSVGADrawable()?.clear()
         // 清除对 drawable 的引用
         setImageDrawable(null)
+    }
+    fun resume() {
+        val drawable = getSVGADrawable() ?: return
+        drawable.resume()
+    }
+
+    fun pause() {
+        val drawable = getSVGADrawable() ?: return
+        drawable.pause()
     }
 
     fun pauseAnimation() {

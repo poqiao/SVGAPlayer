@@ -293,7 +293,7 @@ class SVGAParser(context: Context?) {
                         this.decodeFromCacheKey(cacheKey, callback, alias)
                     } else {
                         if (alias?.contains("file:///assets/") == false) {
-                            Log.d("SVGAParser", "说明不是本地svga")
+                           LogUtils.info(TAG,"说明不是本地svga")
                             //说明不是本地svga 而是在线svga
                             if (!SVGACache.isDefaultCache()) {
                                 // 如果 SVGACache 设置类型为 FILE

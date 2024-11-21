@@ -40,6 +40,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
     implementation "com.squareup.wire:wire-runtime:5.1.0"
+
+    api 'com.github.amitshekhariitbhu:GlideBitmapPool:1.0.0'
 }
 //maven-publish 插件的配置
 // publishing 用于定义项目的发布相关配置

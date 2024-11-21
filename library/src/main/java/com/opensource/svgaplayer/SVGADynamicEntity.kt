@@ -11,6 +11,8 @@ import android.graphics.RectF
 import android.text.BoringLayout
 import android.text.StaticLayout
 import android.text.TextPaint
+import com.glidebitmappool.GlideBitmapFactory
+import com.glidebitmappool.GlideBitmapPool
 import java.lang.Integer.min
 import java.net.HttpURLConnection
 import java.net.URL
@@ -50,7 +52,8 @@ class SVGADynamicEntity {
 
     fun setDynamicImage(bitmap: Bitmap, forKey: String, isCircle: Boolean = false) {
         if (isCircle) {
-            this.dynamicImage.put(forKey, toRoundBitmap(bitmap))
+            val bitmapA= toRoundBitmap(bitmap)
+            this.dynamicImage.put(forKey,bitmapA )
         } else {
             this.dynamicImage.put(forKey, bitmap)
         }
@@ -58,7 +61,6 @@ class SVGADynamicEntity {
     }
     fun setDynamicImage(bitmap: Bitmap, forKey: String) {
         this.dynamicImage.put(forKey, bitmap)
-
     }
     fun setDynamicImage(url: String, forKey: String) {
         val handler = android.os.Handler()
@@ -94,7 +96,7 @@ class SVGADynamicEntity {
                     it.requestMethod = "GET"
                     it.connect()
                     it.inputStream.use { stream ->
-                        BitmapFactory.decodeStream(stream)?.let {
+                      GlideBitmapFactory.decodeStream(stream)?.let {
                             handler.post { setDynamicImage(it, forKey, isCircle) }
                         }
                     }
@@ -180,7 +182,6 @@ class SVGADynamicEntity {
     fun clearDynamicObjects() {
         this.isTextDirty = true
         this.dynamicHidden.clear()
-        this.dynamicImage.clear()
         this.dynamicText.clear()
         this.dynamicTextPaint.clear()
         this.dynamicStaticLayoutText.clear()
@@ -189,13 +190,14 @@ class SVGADynamicEntity {
         this.dynamicIClickArea.clear()
         this.mClickMap.clear()
         this.dynamicDrawerSized.clear()
-        if (dynamicImage.isNotEmpty()) {
-            dynamicImage.forEach {
-                if (!it.value.isRecycled) {
-                    it.value.recycle()
-                }
-            }
-        }
+//        if (dynamicImage.isNotEmpty()) {
+//            dynamicImage.forEach {
+//                if (!it.value.isRecycled) {
+//                    it.value.recycle()
+//                }
+//            }
+//        }
+        this.dynamicImage.clear()
     }
 
     /**
@@ -206,7 +208,7 @@ class SVGADynamicEntity {
      */
     fun toRoundBitmap(bitmap: Bitmap): Bitmap {
         val squareBitmapWidth = min(bitmap.width, bitmap.height)
-        val dstBitmap = Bitmap.createBitmap(
+        val dstBitmap = GlideBitmapPool.getBitmap(
             squareBitmapWidth,  // Width
             squareBitmapWidth,  // Height
             Bitmap.Config.ARGB_8888 // Config

@@ -146,9 +146,6 @@ class SVGAVideoEntity {
         }
     }
 
-    private fun createBitmap(filePath: String): Bitmap? {
-        return SVGABitmapFileDecoder.decodeBitmapFrom(filePath, mFrameWidth, mFrameHeight)
-    }
 
     private fun parserImages(obj: MovieEntity) {
         obj.images?.entries?.forEach { entry ->
@@ -168,8 +165,13 @@ class SVGAVideoEntity {
     }
 
     private fun createBitmap(byteArray: ByteArray, filePath: String): Bitmap? {
+        Log.d("GSFSF","createBitmap")
         val bitmap = SVGABitmapByteArrayDecoder.decodeBitmapFrom(byteArray, mFrameWidth, mFrameHeight)
         return bitmap ?: createBitmap(filePath)
+    }
+
+    private fun createBitmap(filePath: String): Bitmap? {
+        return SVGABitmapFileDecoder.decodeBitmapFrom(filePath, mFrameWidth, mFrameHeight)
     }
 
     private fun resetSprites(json: JSONObject) {
@@ -344,13 +346,13 @@ class SVGAVideoEntity {
         soundPool = null
         audioList = emptyList()
         spriteList = emptyList()
-        if (imageMap.isNotEmpty()) {
-            imageMap.forEach {
-                if (!it.value.isRecycled) {
-                    it.value.recycle()
-                }
-            }
-        }
+//        if (imageMap.isNotEmpty()) {
+//            imageMap.forEach {
+//                if (!it.value.isRecycled) {
+//                    it.value.recycle()
+//                }
+//            }
+//        }
         imageMap.clear()
     }
 }

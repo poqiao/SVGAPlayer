@@ -2,6 +2,8 @@ package com.opensource.svgaplayer.bitmap
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
+import com.glidebitmappool.GlideBitmapFactory
 
 /**
  * 通过文件解码 Bitmap
@@ -11,6 +13,9 @@ import android.graphics.BitmapFactory
 internal object SVGABitmapFileDecoder : SVGABitmapDecoder<String>() {
 
     override fun onDecode(data: String, ops: BitmapFactory.Options): Bitmap? {
-        return BitmapFactory.decodeFile(data, ops)
+        val bitmap = GlideBitmapFactory.decodeFile(data)
+       // bitmap.config = Bitmap.Config.ARGB_8888
+        return bitmap
+        //   return BitmapFactory.decodeFile(data, ops)
     }
 }
